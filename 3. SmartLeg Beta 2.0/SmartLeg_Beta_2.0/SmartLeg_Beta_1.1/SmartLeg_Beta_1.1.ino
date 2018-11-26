@@ -1,48 +1,75 @@
+// SmartBionics
+// Project SmartLeg - Beta Prototype
+// Embedded Software - v.1.1
+// @platform: ATMega 328p (Arduino Uno)
+// @authors: Leonardo Azzi Martins <leonardoazzi@smartbionics.com.br>, Arthur de Freitas e Precht <arthurprecht@smartbionics.com.br>
+
 #include <Wire.h> // Comunicação com os MPU's por meio do I2C
 #include <Servo.h>  // Comunicação com o ESC por meio da comunicação com servo
 #include "Kalman.h" // Filtro de dados para as leituras do MPU
 #include <PID_v1.h> // Controle do motor por meio do PID
+
 /*Definição dos pinos*/
 const int pinoPalmilhaD = A3, pinoPalmilhaP = A1, pinoPalmilhaC = A2; // Pinos da palmilha instrumentada
-const int pinoFDC = 2, pinoHall1 = 3, pinoHall2 = 4; // Pino de sinal do Fim de curso e pinos do sensor de efeito hall
+const int pinoHall1 = 2, pinoHall2 = 3, pinoHall3 = 4; // Pinos do sensor de efeito hall
 const int pinoLEDP = 13, pinoLEDG = 5, pinoLEDR = 6, pinoLEDB = 11; // Pinos do led da placa e dos leds da fita de led
 const int pinoESC = 9; // Pino em que o ESC está conectado
+
 /*Definição da Maquina de estados finitos e filtro de kalman*/
 #define TAM_FILTRO 150 // Definição da quantidade de medidas utilizadas para ser passado pelo filtro de Kalman 
 #define PARADO 0 // Definição do número do estado da máquina de estados finitos
 #define FLEXAO 2 // Definição do número do estado da máquina de estados finitos
 #define EXTENSAO 4 // Definição do número do estado da máquina de estados finitos
 #define VOLTANDO 6 // Definição do número do estado da máquina de estados finitos
+
 /*Declaração das instanmcias de Kalman*/
 Kalman kalmanZ; // Cria a Instancia de Kalman para o eixo Z(Eixo de angulação da coxa)
 Kalman kalmanY; // Cria a Instancia de Kalman para o eixo Y(Eixo de angulação lateral da perna)
+
 /*Timers, endereço e buffer da comunicação I2C*/
 uint32_t timer, timer1; //timers da comunicação I2C
 uint8_t MPUAdress = 0x68, i2cData[14]; // Endereços I2C do MPU e Buffer para os dados I2C
+
 /*Dados brutos recebidos do sensor */
 int16_t accX, gyroX; // Aceleração e vel angular do eixo X (não utilizado, rotação no plano)
 int16_t accY, gyroY; // Aceleração e vel angular do eixo Y (reservado para uso futuro, inclinação lateral do corpo)
 int16_t accZ, gyroZ; // Aceleração e vel angular do eixo Z (Utilizado, angulo da coxa em relação ao solo)
+
 /*Angulos calculados a partir de cada sensor)*/
 double accZangle, accYangle; // angulo calculado a partir dos dados do acelerometro
 double gyroZangle, gyroYangle; // angulo calculado a partir dos dados do giroscópio
 double compAngleZ, compAngleY; // comparação dos dois angulos acima
+
 /*Angulos filtrados e prontos para uso*/
 double kalAngleZ, kalAngleY; // Angulo calculado utilizando o filtro de Kalman, angulo final usado.
 double gyroZrate, gyroYrate;// Velocidade angular filtrada, velocidade angular usada.
 double erroGyroZ, erroGyroY; // Erro no giroscopio do eixo X, descoberto pelo filtro de Kalman
+
 /*Variáveis utilizadas para o controle de movimento e comunicação serial*/
 const int anguloZero = 82;// Angulo de repouso da coxa
 const float resolucao = 1.8; // Resolução do sensor de efeito Hall
 bool sentido = 1; // sentido que a prótese está se movimentando.
 int estado = 0, pulsosDetectados = 0; // Estado da Máquina de estados e Pulsos detectados pela interrupção
+
 /*Variáveis utilizadas para o controle PID da posição do joelho*/
 const double Kp = 1, Ki = 0, Kd = 0; // Parâmetros de sintonia (configuração) do PID
 double Setpoint, Input, Output; // Variáveis de entrada e saída do PID
+
 /*Inicialização da comunicação Servo com o ESC e do PID de controle*/
 Servo ESC; // Declaração da comunicação com o ESC utilizando a biblioteca Servo
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT); // Inicialização do PID utilizado para controlar o motor.
-/*Função dde interrupção responsável por contar os pulsoso lidos pelos sensores de efeito hall*/
+
+//====================================================================
+//                            FUNCTIONS
+//====================================================================
+
+/* -------------------------------------------------------------------
+ * Function name: pulsoDetectado
+ * Description: Função dde interrupção responsável por contar os 
+ * pulsos lidos pelos sensores de efeito hall
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
 void pulsoDetectado()
 {
   byte pinD = (PIND & 0b00011000); //PIND é o conjunto de portas 0-7, o & é um AND de binario, o 00011000 é a mascara, que faz todos os bits exceto o quarto e o quinto ficar 0
@@ -55,7 +82,15 @@ void pulsoDetectado()
     pulsosDetectados++; // Aumenta os pulsos(posição atual)
   }
 }
-/*Função responsável por parar a prótese e acender luzes de aviso caso esta atinja um de seus fins de curso*/
+
+/* -------------------------------------------------------------------
+ * Function name: erroHall
+ * Description: Função responsável por parar a prótese e acender luzes 
+ * de aviso caso esta atinja um de seus fins de curso
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+
 void erroHall()
 {
   digitalWrite(pinoLEDP, HIGH); // Liga o led vermelho da placa
@@ -63,7 +98,14 @@ void erroHall()
   digitalWrite(pinoLEDR, HIGH); // Liga o led vermelho da fita
   digitalWrite(pinoLEDB, LOW); // Desliga o led azul da fita
 }
-/*Função responsável por inicializar e zerar o  MPU*/
+
+/* -------------------------------------------------------------------
+ * Function name: erroHall
+ * Description: Função responsável por inicializar e zerar o MPU.
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+
 void inicializaMPU(int MPU) //MPU é o endereço I2C sendo utilizado pelo MPU em questão, em Hexadecimal
 {
   selectAdress(MPU); // Seleciona o endereço do sensor que está recebendo a comunicação
@@ -113,7 +155,14 @@ void inicializaMPU(int MPU) //MPU é o endereço I2C sendo utilizado pelo MPU em
   erroGyroZ = erroGyroZ / TAM_FILTRO; // Calcula o erro de leitura do giroscópio do eixo Z
   erroGyroY = erroGyroY / TAM_FILTRO; // Calcula o erro de leitura do giroscópio do eixo Y
 }
-/*Função responsavel por realizar a leitura do MPU*/
+
+/* -------------------------------------------------------------------
+ * Function name: atualizaAngulo
+ * Description: Função responsavel por realizar a leitura do MPU.
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+
 bool atualizaAngulo(int MPU) //MPU é o endereço I2C sendo utilizado pelo MPU em questão, em Hexadecimal
 {
   selectAdress(MPU);  // Seleciona o endereço do sensor que está recebendo a comunicação
@@ -149,7 +198,15 @@ bool atualizaAngulo(int MPU) //MPU é o endereço I2C sendo utilizado pelo MPU e
     return false;
   }
 }
-/*Função que faz parte da máquina de estados, responsável por descobrir em qual etapa do ciclo de marcha a prótese está*/
+
+/* -------------------------------------------------------------------
+ * Function name: atualizaAngulo
+ * Description: Função que faz parte da máquina de estados, responsável 
+ * por descobrir em qual etapa do ciclo de marcha a prótese está.
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+
 void selecionaAtividade(int anguloDaCoxa, int velocidadeAngular)
 {
   if (velocidadeAngular < 5 && velocidadeAngular > -5 && anguloDaCoxa < anguloZero - 10 && anguloDaCoxa > anguloZero + 10)
@@ -169,7 +226,15 @@ void selecionaAtividade(int anguloDaCoxa, int velocidadeAngular)
     estado = VOLTANDO;
   }
 }
-/*Função que faz parte da máquina de estados, responsável por decidir qual a ação a ser realizada pela prótese*/
+
+/* -------------------------------------------------------------------
+ * Function name: atualizaAngulo
+ * Description: Função que faz parte da máquina de estados, responsável 
+ * por decidir qual a ação a ser realizada pela prótese.
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+
 int selecionaMovimento(int estado, int anguloDaCoxa)
 {
   static int menorAnguloCoxa = anguloZero;//Variável utilizada para guardar o menor ângulo que a coxa chegou, para flexionar a perna de acordo
@@ -214,7 +279,16 @@ int selecionaMovimento(int estado, int anguloDaCoxa)
       break;
   }
 }
-/*Função responsável por calcular o sentido de movimento e calcular o PID, assim como limitar eletronicamente o curso máximo e minimo da prótese*/
+
+/* -------------------------------------------------------------------
+ * Function name: atualizaAngulo
+ * Description: Função responsável por calcular o sentido de movimento 
+ * e calcular o PID, assim como limitar eletronicamente o curso máximo 
+ * e minimo da prótese
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+
 void decideSentido(int PosicaoFinal) //PosicaoFinal é o valor que se deseja que a prótese angule, em graus
 {
   const int pulsosMin = -3, pulsosMax = 40; // Limites de curso mínimo (-3*1.8 = -5.4º) e curso máximo (40*1.8=72º)
@@ -251,7 +325,14 @@ void decideSentido(int PosicaoFinal) //PosicaoFinal é o valor que se deseja que
     myPID.Compute();
   }
 }
-/*Função responsável por dar a ordem de movimento ao ESC*/
+
+/* -------------------------------------------------------------------
+ * Function name: atualizaAngulo
+ * Description: Função responsável por dar a ordem de movimento ao ESC.
+ * Inputs:
+ * Outputs:
+ * ---------------------------------------------------------------- */
+ 
 void movimentaMotor(double valor)
 {
   const int servoMin = 20, servoParadoMin = 83; // Valor minimo que o ESC aceita como entrada e valor minimo de entrada que não movimenta o motor
@@ -285,6 +366,10 @@ void movimentaMotor(double valor)
   }
 }
 
+//====================================================================
+//                          SETUP AND LOOP
+//====================================================================
+
 void setup()
 {
   pinMode(0, INPUT); //Definição necessária para a leitura de portas da interrupção
@@ -297,7 +382,7 @@ void setup()
   pinMode(7, INPUT);
   pinMode(pinoLEDP, OUTPUT);
   attachInterrupt(digitalPinToInterrupt(pinoHall1), pulsoDetectado, CHANGE); // Interrupção da leitura do Sensor de efeito Hall
-  //attachInterrupt(digitalPinToInterrupt(pinoFDC), erroHall, LOW); // Interrupção da leitura do Sensor de efeito Hall
+
   Wire.begin(); //Inicio da comunicação wire, responsavel por tratar do protoocolo I2C, para o MPU
   ESC.attach(pinoESC); // Inicio da comunicação com o ESC por meio do sistema de comunicação dos servos
   Serial.begin(115200); // Comunicação serial. Não esquecer de setar o rate certo
@@ -328,3 +413,5 @@ void loop()
     Serial.print("\n Falha na comunicacao \n");
   }
 }
+
+//end
