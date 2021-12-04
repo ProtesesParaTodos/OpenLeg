@@ -4,63 +4,49 @@
 # CFF: https://citation-file-format.github.io/
 
 cff-version: 1.2.0
-message: If you use ruby-cff in your work, please cite it using the following metadata
-title: Ruby CFF Library
-abstract: This library provides a Ruby interface to manipulate Citation File Format files
+message: If you use SmartLeg in your work, please cite it using the following metadata
+title: SmartLeg
+abstract: This project is an open smart transfemoral prosthesis
 authors:
-- family-names: Haines
-  given-names: Robert
-  orcid: https://orcid.org/0000-0002-9538-7919
-  affiliation: The University of Manchester, UK
-- name: The Ruby Citation File Format Developers
+- family-names: de Freitas e Precht
+  given-names: Arthur
+  orcid: https://orcid.org/0000-0000-0000-0000
+  affiliation: Universidade Federal de Santa Maria, UFSM
+- family-names: Azzi Martins
+  given-names: Leonardo
+  orcid: https://orcid.org/0000-0000-0000-0000
+  affiliation: Universidade Federal do Rio Grande do Sul, UFRGS
+- family-names: da Silva Sampaio
+  given-names: Luciano
+  orcid: https://orcid.org/0000-0000-0000-0000
+  affiliation: Instituto Federal Sul-riograndense, IFSul
+- name: SmartLeg: Prótese Transfemoral Inteligente
 keywords:
-- ruby
-- credit
-- software citation
-- research software
-- software sustainability
-- metadata
-- citation file format
-- CFF
+- prosthesis
+- transfemoral
+- robotic leg
 version: 0.9.0
 doi: 10.5281/zenodo.1184077
 date-released: 2021-08-18
-license: Apache-2.0
+license: MPL-2.0
 repository-artifact: https://rubygems.org/gems/cff
-repository-code: https://github.com/citation-file-format/ruby-cff
+repository-code: https://github.com/SmartBionics/SmartLeg
 references:
 - type: software
   title: Citation File Format
   authors:
-  - family-names: Druskat
-    given-names: Stephan
-    orcid: https://orcid.org/0000-0003-4925-7248
-  - family-names: Spaaks
-    given-names: Jurriaan H.
-    orcid: https://orcid.org/0000-0002-7064-4069
-  - family-names: Chue Hong
-    given-names: Neil
-    orcid: https://orcid.org/0000-0002-8876-7606
-  - family-names: Haines
-    given-names: Robert
-    orcid: https://orcid.org/0000-0002-9538-7919
-  - family-names: Baker
-    given-names: James
-    orcid: https://orcid.org/0000-0002-2682-6922
-  - family-names: Bliven
-    given-names: Spencer
-    orcid: https://orcid.org/0000-0002-1200-1698
-    email: spencer.bliven@gmail.com
-  - family-names: Willighagen
-    given-names: Egon
-    orcid: https://orcid.org/0000-0001-7542-0286
-  - family-names: Pérez-Suárez
-    given-names: David
-    orcid: https://orcid.org/0000-0003-0784-6909
-    website: https://dpshelio.github.io
-  - family-names: Konovalov
-    given-names: Alexander
-    orcid: https://orcid.org/0000-0001-5299-3292
+    - family-names: de Freitas e Precht
+      given-names: Arthur
+      orcid: https://orcid.org/0000-0000-0000-0000
+      affiliation: Universidade Federal de Santa Maria, UFSM
+    - family-names: Azzi Martins
+      given-names: Leonardo
+      orcid: https://orcid.org/0000-0000-0000-0000
+      affiliation: Universidade Federal do Rio Grande do Sul, UFRGS
+    - family-names: da Silva Sampaio
+      given-names: Luciano
+      orcid: https://orcid.org/0000-0000-0000-0000
+      affiliation: Instituto Federal Sul-riograndense, IFSul
   identifiers:
   - type: doi
     value: 10.5281/zenodo.1003149
