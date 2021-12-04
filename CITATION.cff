@@ -1,16 +1,20 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
-authors:
-- family-names: "de Freitas e Precht"
-  given-names: "Arthur"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
-- family-names: "Azzi Martins"
-  given-names: "Leonardo"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
-- family-names: "da Silva Sampaio"
-  given-names: "Luciano"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
+references:
+- type: software
+  title: Citation File Format
+  authors:
+  - family-names: "de Freitas e Precht"
+    given-names: "Arthur"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+  - family-names: "Azzi Martins"
+    given-names: "Leonardo"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+  - family-names: "da Silva Sampaio"
+    given-names: "Luciano"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
   title: "SmartLeg - Prótese Transfemoral Inteligente"
 version: 2.0.4
 date-released: 2017-12-18
 url: "https://github.com/SmartBionics/SmartLeg"
+license: CC-BY-4.0
