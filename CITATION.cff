@@ -1,20 +1,19 @@
-
-# This CITATION.cff file was created by ruby-cff (v 0.9.0).
-# Gem: https://rubygems.org/gems/cff
-# CFF: https://citation-file-format.github.io/
-
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-- family-names: "Lisa"
-  given-names: "Mona"
+- family-names: "de Freitas e Precht"
+  given-names: "Arthur"
   orcid: "https://orcid.org/0000-0000-0000-0000"
-- family-names: "Bot"
-  given-names: "Hew"
+- family-names: "Azzi Martins"
+  given-names: "Leonardo"
   orcid: "https://orcid.org/0000-0000-0000-0000"
-title: "My Research Software"
+- family-names: "da Silva Sampaio"
+  given-names: "Luciano"
+  orcid: "https://orcid.org/0000-0000-0000-0000"
+title: "SmartLeg: Smart Transfemoral Prosthesis"
 version: 2.0.4
 doi: 10.5281/zenodo.1234
 date-released: 2017-12-18
-url: "https://github.com/github/linguist"
+url: "https://github.com/SmartBionics/SmartLeg"
+
 
