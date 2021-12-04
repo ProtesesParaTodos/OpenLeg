@@ -10,6 +10,9 @@ Repositório dedicado ao desenvolvimento da prótese transfemoral ativa SmartLeg
 
 Repository dedicated to the development of the SmartLeg, the smart transfemoral prosthesis.
 
+
+![](https://github.com/SmartBionics/SmartLeg/blob/master/image36.png)
+
 ## Contribuições
 
 Por favor, leia [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre nosso código de conduta, e o processo de submeter pull requests para nós.
