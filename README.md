@@ -32,7 +32,7 @@ Atualmente, o projeto é governado em open source. Este é o documento em [PROJE
 
 ## License
 
-This project is licensed under the Mozilla Public License, version 2.0 - see LICENSE for details
+This project is licensed under the GNU General Public License v3.0  - see LICENSE for details
 
 ## Licenses third-party code
 
