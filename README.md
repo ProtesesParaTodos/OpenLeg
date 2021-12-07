@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2019-2021 Alliander N.V.
 
 SPDX-License-Identifier: MPL-2.0
 -->
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL%202.0-brightgreen.svg)](https://github.com/SmartBionics/SmartLeg/blob/master/LICENSE)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # SmartLeg
 Repositório dedicado ao desenvolvimento da prótese transfemoral ativa SmartLeg.
