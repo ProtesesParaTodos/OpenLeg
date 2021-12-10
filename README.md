@@ -3,7 +3,7 @@ SPDX-FileCopyrightText: 2019-2021 Alliander N.V.
 
 SPDX-License-Identifier: MPL-2.0
 -->
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv2-orange.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv2-orange.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
 # OpenLeg
 Repositório dedicado ao desenvolvimento da prótese transfemoral ativa de software livre OpenLeg.
@@ -32,11 +32,11 @@ Atualmente, o projeto é governado em open source. Este é o documento em [PROJE
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0  - see LICENSE for details
+This project is licensed under the GNU General Public License v2.0  - see LICENSE-GPL for details
 
 ## Licenses third-party code
 
-This project includes third-party code, which is licensed under their own respective Open-Source licenses. SPDX-License-Identifier headers are used to show which license is applicable. The concerning license files can be found in the LICENSES directory. 
+This project includes third-party code, which is licensed under their own respective Open-Source licenses.The concerning license files can be found in the LICENSES directory. 
 
 ## Agradecimentos
 
