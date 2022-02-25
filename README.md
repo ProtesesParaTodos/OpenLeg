@@ -1,8 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2019-2021 Alliander N.V.
-
-SPDX-License-Identifier: MPL-2.0
--->
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv2-orange.svg)](https://www.gnu.org/licenses/gpl-2.0)
 
 # OpenLeg
@@ -27,6 +22,8 @@ Este projeto foi inicialmente criado por:
 * **Prof. Me. Diego Afonso da Silva Lima** - *Orientador, modelagem e fabricação do sistema mecânico*
 * **Prof. Paulo Ricardo Boesch Júnior** - *Co-orientador, modelagem e fabricação do sistema mecânico*
 * **Prof. Me. Matias de Angelis Korb** - *Co-orientador, modelagem do sistema mecânico*
+
+de Freitas e Precht, A., Azzi Martins, L., & da Silva Sampaio, L. (2017). SmartLeg: Smart Transfemoral Prosthesis (Version 2.0.4) [Computer software]. https://doi.org/10.5281/zenodo.1234
 
 Atualmente, o projeto é governado em open source. Este é o documento em [PROJECT_GOVERNANCE](PROJECT_GOVERNANCE.md).
 
