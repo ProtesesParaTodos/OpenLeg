@@ -4,6 +4,8 @@
 // @platform: ATMega 328p (Arduino Uno)
 // @authors: Leonardo Azzi Martins <leonardoazzi@smartbionics.com.br>, Arthur de Freitas e Precht <arthurprecht@smartbionics.com.br>
 
+//adding some dummy stuff here to test
+
 #include <Wire.h> // Comunicação com os MPU's por meio do I2C
 #include <Servo.h>  // Comunicação com o ESC por meio da comunicação com servo
 #include "Kalman.h" // Filtro de dados para as leituras do MPU
@@ -59,9 +61,7 @@ double Setpoint, Input, Output; // Variáveis de entrada e saída do PID
 Servo ESC; // Declaração da comunicação com o ESC utilizando a biblioteca Servo
 PID myPID(&Input, &Output, &Setpoint, Kp, Ki, Kd, DIRECT); // Inicialização do PID utilizado para controlar o motor.
 
-//====================================================================
-//                            FUNCTIONS
-//====================================================================
+
 
 /* -------------------------------------------------------------------
  * Function name: pulsoDetectado
@@ -366,6 +366,8 @@ void movimentaMotor(double valor)
   }
 }
 
+print("euheuehuehuehue");
+
 //====================================================================
 //                          SETUP AND LOOP
 //====================================================================
@@ -392,7 +394,7 @@ void setup()
   inicializaMPU(MPUAdress);
 }
 
-void loop()
+void loop(
 {
   static int posicao = 0; // Posição que se deseja que a prótese chegue
   if (atualizaAngulo(MPUAdress)) // Caso o MPU esteja funcionando, o programa executa sua função normalmente
@@ -414,4 +416,4 @@ void loop()
   }
 }
 
-//end
+
